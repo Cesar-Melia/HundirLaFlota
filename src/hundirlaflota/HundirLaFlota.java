@@ -22,7 +22,7 @@ public class HundirLaFlota {
         int numAle = (int) (Math.random() * (max - min + 1) + min);
         return numAle;
     }
-
+    
     //Función para crear un tablero vacio.
     public static char[][] crear_tablero_vacio(char nuevoTablero[][]) {
 
@@ -35,36 +35,89 @@ public class HundirLaFlota {
     }
     
     //Función para comprobar si estan libres las casillas para el barco.
-    public static boolean barcoOK (char tableroBarcos[][],String barco,int columna,int fila){
+    public static boolean barcoOK (char tableroBarcos[][],String barco,int fila, int columna){
         boolean libre = true;
         
         //Diferenciamos si es un portaaviones para comprobar la vertical u horizontal.
         if (barco.length() < 5){
-            while(libre == true){
-                for(int i = 0; i < barco.length();i++){
-                    if (tableroBarcos[fila][columna+i] == '-'){    
-                    }
-                    else{ 
-                        libre = false;
-                    }
-                } 
-            break;
-            }
-        }else{
-            while(libre == true){
-                for(int i = 0; i < barco.length();i++){
-                    if (tableroBarcos[fila+i][columna] == '-'){    
-                    }
-                    else{ 
-                        libre = false;
-                    }
-                } 
-            break;
-            }   
+            for(int i = 0; i < barco.length();i++){
+                if (tableroBarcos[fila][columna+i] == '-'){}
+                else{ 
+                    libre = false;
+                }
+            } 
+        }
+        else{
+            for(int i = 0; i < barco.length();i++){
+                if (tableroBarcos[fila+i][columna] == '-'){}
+                else{ 
+                    libre = false;
+                }
+            }      
         }
         return libre;
     }
-    
+
+    //Funcion para insertar barcos de forma aleatoria.
+    public static char[][] insertar_barcos(char tableroBarcos[][], int lancha, int buque, int acorazado, int portaaviones) {
+        
+        //Definimos el tamaño de cada barco y creamos una variable para confirmar su colocación.
+        String L = "L", B = "BBB", Z = "ZZZZ", P = "PPPPP";
+        boolean test = false;
+       
+        for (int i =0;i < lancha;i++){
+            int fila = numAleatorio(0,tableroBarcos.length-1);       
+            int columna = numAleatorio(0,tableroBarcos[1].length-1);
+                
+            if (barcoOK(tableroBarcos,L,fila,columna) == true){
+                tableroBarcos[fila][columna] = 'L';
+            }
+            else{
+                i--;
+            }
+        }
+        for (int i =0;i < buque;i++){
+            int fila = numAleatorio(0,tableroBarcos.length-1);       
+            int columna = numAleatorio(0,tableroBarcos[1].length-3);
+                
+            if (barcoOK(tableroBarcos,B,fila,columna) == true){
+                for(int j = 0; j < B.length(); j++){
+                    tableroBarcos[fila][columna+j] = 'B';
+                }
+            }
+            else{
+                i--;
+            }
+        }
+        for (int i =0;i < acorazado;i++){
+            int fila = numAleatorio(0,tableroBarcos.length-1);       
+            int columna = numAleatorio(0,tableroBarcos[1].length-4);
+                
+            if (barcoOK(tableroBarcos,Z,fila,columna) == true){
+                for(int j = 0; j < Z.length(); j++){
+                    tableroBarcos[fila][columna+j] = 'Z';
+                }
+            }
+            else{
+                i--;
+            }
+        }
+        for (int i =0;i < portaaviones;i++){
+            int fila = numAleatorio(0,tableroBarcos.length-5);       
+            int columna = numAleatorio(0,tableroBarcos[1].length-1);
+                
+            if (barcoOK(tableroBarcos,P,fila,columna) == true){
+                for(int j = 0; j < P.length(); j++){
+                    tableroBarcos[fila+j][columna] = 'P';
+                }
+            }
+            else{
+                i--;
+            }
+        }
+        return tableroBarcos;
+    }
+
     //Función para imprimir tablero.
     public static void imprimir_tablero(char tablero[][]) {
 
@@ -93,6 +146,15 @@ public class HundirLaFlota {
         char tableroEstandard[][] = new char[10][10];
         char tableroPersonalizado[][];
         char tableroOrdenador[][] = crear_tablero_vacio(tableroEstandard);
+        
+        //imprimir_tablero(tableroOrdenador);
+        
+        tableroOrdenador = insertar_barcos(tableroOrdenador, 4, 3, 2, 2);
+        
+        imprimir_tablero(tableroOrdenador);
+
+        //System.out.println();
+
     }
 
 }
