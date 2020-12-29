@@ -17,34 +17,82 @@ public class HundirLaFlota {
      * @param args the command line arguments
      */
     
+    //funcion para obtener un número aleatorio.
+    public static int numAleatorio(int min, int max) {
+        int numAle = (int) (Math.random() * (max - min + 1) + min);
+        return numAle;
+    }
+
+    //Función para crear un tablero vacio.
+    public static char[][] crear_tablero_vacio(char nuevoTablero[][]) {
+
+        for (int i = 0; i < nuevoTablero.length; i++) {
+            for (int j = 0; j < nuevoTablero[i].length; j++) {
+                nuevoTablero[i][j] = '-';
+            }
+        }
+        return nuevoTablero;
+    }
+    
+    //Función para comprobar si estan libres las casillas para el barco.
+    public static boolean barcoOK (char tableroBarcos[][],String barco,int columna,int fila){
+        boolean libre = true;
+        
+        //Diferenciamos si es un portaaviones para comprobar la vertical u horizontal.
+        if (barco.length() < 5){
+            while(libre == true){
+                for(int i = 0; i < barco.length();i++){
+                    if (tableroBarcos[fila][columna+i] == '-'){    
+                    }
+                    else{ 
+                        libre = false;
+                    }
+                } 
+            break;
+            }
+        }else{
+            while(libre == true){
+                for(int i = 0; i < barco.length();i++){
+                    if (tableroBarcos[fila+i][columna] == '-'){    
+                    }
+                    else{ 
+                        libre = false;
+                    }
+                } 
+            break;
+            }   
+        }
+        return libre;
+    }
+    
     //Función para imprimir tablero.
-    public static void imprimir_tablero(char tablero[][]){
-        
-        char columnas[] = new char[]{'0','1','2','3','4','5','6','7','8','9'};
-        char filas [] = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-        
+    public static void imprimir_tablero(char tablero[][]) {
+
+        char columnas[] = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        char filas[] = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+
         System.out.print(" ");
-        for (int i = 0; i < columnas.length; i++){
-            System.out.print(" "+columnas[i]);
+        for (int i = 0; i < columnas.length; i++) {
+            System.out.print(" " + columnas[i]);
         }
         System.out.print("\n");
-        for (int i = 0; i < tablero.length; i++){
+        for (int i = 0; i < tablero.length; i++) {
             System.out.print(filas[i]);
-            for (int j = 0; j < tablero[i].length; j++){
-                System.out.print(" "+tablero[i][j]);
+            for (int j = 0; j < tablero[i].length; j++) {
+                System.out.print(" " + tablero[i][j]);
             }
-            System.out.print("\n");    
+            System.out.print("\n");
         }
-        
+
     }
-    
+
     public static void main(String[] args) {
-        
-        Scanner sc =new Scanner(System.in);
-        
+
+        Scanner sc = new Scanner(System.in);
+
         char tableroEstandard[][] = new char[10][10];
-        char tableroPersonalizado [][];
+        char tableroPersonalizado[][];
         char tableroOrdenador[][] = crear_tablero_vacio(tableroEstandard);
     }
-    
+
 }
