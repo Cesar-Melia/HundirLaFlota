@@ -17,7 +17,7 @@ public class HundirLaFlota {
      * @param args the command line arguments
      */
     
-    //funcion para obtener un número aleatorio.
+    //Funcion para obtener un número aleatorio.
     public static int numAleatorio(int min, int max) {
         int numAle = (int) (Math.random() * (max - min + 1) + min);
         return numAle;
@@ -64,7 +64,8 @@ public class HundirLaFlota {
         //Definimos el tamaño de cada barco y creamos una variable para confirmar su colocación.
         String L = "L", B = "BBB", Z = "ZZZZ", P = "PPPPP";
         boolean test = false;
-       
+        
+        //Introducimos las lanchas.
         for (int i =0;i < lancha;i++){
             int fila = numAleatorio(0,tableroBarcos.length-1);       
             int columna = numAleatorio(0,tableroBarcos[1].length-1);
@@ -76,6 +77,7 @@ public class HundirLaFlota {
                 i--;
             }
         }
+        //Introducimos los buques.
         for (int i =0;i < buque;i++){
             int fila = numAleatorio(0,tableroBarcos.length-1);       
             int columna = numAleatorio(0,tableroBarcos[1].length-3);
@@ -89,6 +91,7 @@ public class HundirLaFlota {
                 i--;
             }
         }
+        //Introducimos los acorazados.
         for (int i =0;i < acorazado;i++){
             int fila = numAleatorio(0,tableroBarcos.length-1);       
             int columna = numAleatorio(0,tableroBarcos[1].length-4);
@@ -102,6 +105,7 @@ public class HundirLaFlota {
                 i--;
             }
         }
+        //Introducimos los portaaviones.
         for (int i =0;i < portaaviones;i++){
             int fila = numAleatorio(0,tableroBarcos.length-5);       
             int columna = numAleatorio(0,tableroBarcos[1].length-1);
