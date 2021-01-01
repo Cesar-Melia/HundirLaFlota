@@ -23,7 +23,7 @@ public class HundirLaFlota {
     }
 
     //Función para convertir letra de fila a numero entero.
-    public static int num_fila(String fila) {
+    /*public static int num_fila(String fila) {
 
         int numeroFila = -1;
         if (fila.matches("[A-J]")) {
@@ -63,7 +63,7 @@ public class HundirLaFlota {
         }
 
         return numeroFila;
-    }
+    }*/
 
     //Función para crear un tablero vacio.
     public static char[][] crear_tablero_vacio(char nuevoTablero[][]) {
@@ -193,29 +193,16 @@ public class HundirLaFlota {
     }
 
     //Funcion para efectuar disparo.
-    public static char[][] disparo(char tablero[][], int fila, int columna, int sumaBarcosFinal) {
-        
+    public static char[][] disparo(char tablero[][], int fila, int columna,char filas[] ,String columnas[]){
         
         if (tablero[fila][columna] == '-') {
             tablero[fila][columna] = 'A';
-            System.out.println("Agua");
+            imprimir_tablero(tablero, filas, columnas,true);
+            System.out.println("\nAgua");
         } else {
             tablero[fila][columna] = 'X';
-            System.out.println("Tocado");
-            
-            //Comprobamos si ha finalizado el juego.
-            int numeroAciertos = 0;
-            for (int i = 0; i < tablero.length;i++){
-                for (int j = 0;j < tablero[i].length; j++ ) {
-                    if (tablero[i][j] == 'X'){
-                        numeroAciertos++;
-                        System.out.println("Te faltan "+(sumaBarcosFinal - numeroAciertos)+" aciertos para ganar.");
-                    }
-                }
-            }
-            if (sumaBarcosFinal == numeroAciertos){
-                System.out.println("¡Has ganado!");
-            }
+            imprimir_tablero(tablero, filas, columnas,true);
+            System.out.println("\n¡Tocado!");
         }
         return tablero;
     }
@@ -302,7 +289,7 @@ public class HundirLaFlota {
             //Creamos el tablero con los datos introducidos por consola.
             //Establecemos un mínimo de 5 por cada lado por ser el tamaño del portaaviones y evitar errores.
             //Establecemos el máximo de fila en 27 (número de letras del alfabeto) y columnas en 100 por limitar el máximo.
-            int filasTablero = Integer.parseInt(pregunta("¿Cuántas filas quieres que tenga el tablero? \n(Mínimo 5, máximo 27)", "(2[0-7]|[1][0-9]|[5-9])", "Escribe un número de filas entre 5 y 25:"));
+            int filasTablero = Integer.parseInt(pregunta("¿Cuántas filas quieres que tenga el tablero? \n(Mínimo 5, máximo 27)", "(2[0-7]|[1][0-9]|[5-9])", "Escribe un número de filas entre 5 y 27:"));
             int columnasTablero = Integer.parseInt(pregunta("¿Cuántas columnas quieres que tenga el tablero? \n(Mínimo 5, máximo 99)", "([1-9][0-9]|[5-9])", "Escribe un número de columnas entre 5 y 99:"));
 
             tablero = new char[filasTablero][columnasTablero];
@@ -339,22 +326,23 @@ public class HundirLaFlota {
         }
         
         
-        System.out.println("Comienza el juego!\n");
+        System.out.println("\nComienza el juego...\n");
+        
+        //Creamos un bucle para desarrollar la partida.
+        for (int i = 0; i <= intentos; i++) {
             
-        for (int i = 0; i < intentos; i++) {
-            
-            String preguntaDisparo = "Efectua un disparo marcando las coordenadas(Fila)(Columna):\n Ejemplo: A7";
+            String preguntaDisparo = "\nEfectua un disparo marcando las coordenadas(Fila)(Columna):\n";
             
             if (columnaMax.length() > 1){
-                System.out.println("Length Mayor 1... columnaMax = "+columnaMax);
-                String coordenadas = pregunta(preguntaDisparo,"([A-"+filaMax+"]"+columnaMax.substring(0,1)+"[0-"+columnaMax.substring(1,2)+"]|[1-"+Integer.toString(Integer.parseInt(columnaMax.substring(0,1))-1)+"]?[0-9]",preguntaDisparo);
+                
+                String coordenadas = pregunta(preguntaDisparo,"([A-"+filaMax+"]"+columnaMax.substring(0,1)+"[0-"+columnaMax.substring(1,2)+"]|[A-"+filaMax+"][0-"+Integer.toString(Integer.parseInt(columnaMax.substring(0,1))-1)+"]?[0-9])",preguntaDisparo);
                 
                 for (int j = 0; j < filas.length; j++){
                     if (filas[j] == coordenadas.charAt(0)){
                         fila = j;
                     }
                 }
-                tablero = disparo(tablero, fila, Integer.parseInt(coordenadas.substring(1,2)),sumaBarcos);
+                tablero = disparo(tablero, fila, Integer.parseInt(coordenadas.substring(1,coordenadas.length())),filas,columnas);
             }else{
                 String coordenadas = pregunta(preguntaDisparo,"([A-"+filaMax+"][0-"+columnaMax+"])",preguntaDisparo);
                 
@@ -363,18 +351,30 @@ public class HundirLaFlota {
                         fila = j;
                     }
                 }
-                tablero = disparo(tablero, fila, Integer.parseInt(coordenadas.substring(1,2)),sumaBarcos);
+                tablero = disparo(tablero, fila, Integer.parseInt(coordenadas.substring(1,2)),filas,columnas);
             }
-           /* System.out.println("1: "+coordenadas.substring(0));       B4 ///////////////    27       (2[0-7]|[1][0-9]|[5-9])
-            System.out.println("2: "+coordenadas.substring(1));         4
-            System.out.println("3: "+coordenadas.substring(0,1));       B
-            System.out.println("4: "+coordenadas.substring(1,1));
-            System.out.println("5: "+coordenadas.substring(1,2));       4*/
             
-            
-            
-            intentos--;
-            System.out.println("Te quedan " + intentos + " intentos.");
+            //Comprobamos si ha finalizado el juego y si no es asi imprimimos los intentos restantes
+            int numeroAciertos = 0;
+            for (int j = 0; j < tablero.length;j++){
+                for (int k = 0;k < tablero[j].length; k++ ) {
+                    if (tablero[j][k] == 'X'){
+                        numeroAciertos++;  
+                    }
+                }
+            }
+            String game = "";
+            if (sumaBarcos == numeroAciertos){
+                game = "win";
+                System.out.println("\n¡HAS GANADO!");
+                break;
+            }
+            if (intentos == 0 && game != "win"){
+                System.out.println("\nGAME OVER");
+            }else{
+                System.out.println("Te quedan " + (intentos-i+1) + " intentos.");
+                System.out.println("Te faltan "+(sumaBarcos - numeroAciertos)+" aciertos para ganar.");
+            }
         }
 
         
