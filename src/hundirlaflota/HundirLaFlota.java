@@ -13,10 +13,7 @@ import java.util.Scanner;
 
 public class HundirLaFlota {
 
-    /**
-     * @param args the command line arguments
-     */
-    //Funcion para obtener un número aleatorio.
+    
     public static int numAleatorio(int min, int max) {
         int numAle = (int) (Math.random() * (max - min + 1) + min);
         return numAle;
@@ -297,7 +294,7 @@ public class HundirLaFlota {
         //Creamos dos variables que delimitaran los limites del tablero.
         String filaMax = "J";
         String columnaMax = "9";
-
+        
         //Creamos el tablero.
         char tablero[][];
         int filasTablero = 10, columnasTablero = 10;
@@ -306,26 +303,23 @@ public class HundirLaFlota {
             tablero = new char[filasTablero][columnasTablero];
             tablero = crear_tablero_vacio(tablero);
         } else {
-            //Creamos el tablero con los datos introducidos por consola.
-            //Establecemos un mínimo de 5 por cada lado por ser el tamaño del portaaviones y evitar errores.
-            //Establecemos el máximo de fila en 27 (número de letras del alfabeto) y columnas en 100 por limitar el máximo.
+            //Creamos el tablero personalizado con los datos introducidos por consola.
+            //Mínimo de 5 por cada lado por ser el tamaño del portaaviones, máximo de fila en 27 (número de letras del alfabeto) y columnas en 100 por poner límite.
             filasTablero = Integer.parseInt(pregunta("¿Cuántas filas quieres que tenga el tablero? \n(Mínimo 5, máximo 27)", "(2[0-7]|[1][0-9]|[5-9])", "Escribe un número de filas entre 5 y 27:"));
             columnasTablero = Integer.parseInt(pregunta("¿Cuántas columnas quieres que tenga el tablero? \n(Mínimo 5, máximo 99)", "([1-9][0-9]|[5-9])", "Escribe un número de columnas entre 5 y 99:"));
-
             tablero = new char[filasTablero][columnasTablero];
             tablero = crear_tablero_vacio(tablero);
-
             //Establecemos la fila y columna máxima para delimitar el tablero a la hora de disparar
             filaMax = Character.toString(filas[filasTablero - 1]);
             columnaMax = Integer.toString(columnasTablero - 1);
         }
         //Creamos una variable por cada tipo de barco y otra con la suma total de casillas que ocuparán.
         int L, B, Z, P;
-        int sumaBarcos = 0;
+        int sumaBarquitos = 0;
 
         do {
             //Mensaje de error si la cantidad total de barcos ocupa más de un 75% del tablero.
-            if (sumaBarcos != 0) {
+            if (sumaBarquitos != 0) {
                 System.out.print("La suma total de los barcos que has introducido ocupa más que el número de casillas permitidas.\n"
                         + "Porfavor, introduce de nuevo la cantidad de barcos:\n");
             }
@@ -334,8 +328,8 @@ public class HundirLaFlota {
             B = numero_buques(nivel);
             Z = numero_acorazados(nivel);
             P = numero_portaaviones(nivel);
-            sumaBarcos = L + B * 3 + Z * 4 + P * 5;
-        } while (sumaBarcos + sumaBarcos / 100 * 50 > filasTablero * columnasTablero);
+            sumaBarquitos = L + B * 3 + Z * 4 + P * 5;
+        } while (sumaBarquitos + sumaBarquitos / 100 * 50 > filasTablero * columnasTablero);
 
         tablero = insertar_barcos(tablero, L, B, Z, P);
 
@@ -382,7 +376,7 @@ public class HundirLaFlota {
                     }
                 }
             }
-            if (sumaBarcos == numeroAciertos) {
+            if (sumaBarquitos == numeroAciertos) {
                 System.out.println("\n¡HAS GANADO!");
                 break;
             }
@@ -390,7 +384,8 @@ public class HundirLaFlota {
                 System.out.println("\nGAME OVER");
             } else {
                 System.out.println("Te quedan " + (intentos - i - 1) + " intentos.");
-                System.out.println("Te faltan " + (sumaBarcos - numeroAciertos) + " aciertos para ganar.");
+                System.out.println("Te faltan " + (sumaBarquitos - numeroAciertos) + " aciertos para ganar.");
+                
             }
         }
     }
